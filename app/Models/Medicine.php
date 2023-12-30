@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\MedicineController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,4 +18,11 @@ class Medicine extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
+    public function medicines()
+    {
+        return $this->hasMany(Favourite::class,'medicine_id');
+    }
+    protected $casts = [
+        'quantity_available' => 'integer'
+    ];
 }

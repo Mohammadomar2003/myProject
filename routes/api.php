@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\ApiController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Auth\WarehouseController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MedicineController;
-use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,24 +23,49 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/register', [ApiController::class, 'register']);
-Route::post('/login', [ApiController::class, 'login']);
-Route::get('/logout', [ApiController::class, 'logout']);
 
-Route::post('/warehouse/register', [WarehouseController::class, 'register']);
-Route::post('/warehouse/login', [WarehouseController::class, 'login']);
-Route::get('/warehouse/logout', [WarehouseController::class, 'logout']);
-
-Route::post('/storeMedicine',[MedicineController::class,'store']);
-Route::post('/search_WhatEver',[MedicineController::class,'search_WhatEver']);
-Route::get('/categoryMedicines/{id}',[CategoryController::class,'showCategoryMedicines']);
-Route::get('/warehousesMedicines/{id}',[WarehouseController::class,'showCategoryMedicinesW']);
-
-Route::get('/allmedicines',[MedicineController::class,'index']);
-Route::get('/medicineDetails/{id}',[MedicineController::class,'Details']);
-Route::middleware(['auth:sanctum','type.warehouse'])->group(function (){
-
+Route::controller(CategoryController::class)->group(function (){
+    Route::get('/categoryMedicines/{id}','showCategoryMedicines');//both
+    Route::get('/getCategory','getCategory');//pharmacy&&warehouse
 });
-Route::middleware(['auth:sanctum','type.user'])->group(function (){
 
+Route::controller(WarehouseController::class)->group(function (){
+    Route::post('/w/register','register');//warehouse
+    Route::post('/w/login','login');//warehouse
+    Route::get('/w/logout','logout');//warehouse
+    Route::get('/warehouses','getWarehouse');//warehouse
+    Route::get('/warehousesMedicines/{id}','showCategoryMedicines');//pharmacy
 });
+
+Route::controller(MedicineController::class)->group(function ()
+{
+    Route::post('/storeMedicine/{id}','store');//warehouse
+    Route::get('/medicineDetails/{id}','Details');//pharmacy
+    Route::get('/allmedicines','index');//pharmacy
+    Route::post('/search_WhatEver','search_WhatEver');//pharmacy
+    Route::get('/deleteMedicine/{id}','delete');//warehouse
+    Route::get('/update/{id}','update');//warehouse
+});
+
+Route::controller(OrderController::class)->group(function (){
+    Route::post('/order/store/{id}','storeOrders');//pharmacy
+    Route::get('/order/{id}','showUserOrder');//pharmacy
+    Route::get('/order/Details/{id}','index');//pharmacy&&warehouse
+    Route::post('/order/UpdateStatus/{id}','updateOrderStatus');//warehouse
+    Route::get('/order/warehouseOrder/{id}','warehouseOrder');//warehouse
+    Route::get('/order/delete/{id}','Deleteorder');//warehouse&&pharmacy
+});
+
+Route::controller( UserController::class)->group(function ()
+{
+    Route::post('/register', 'user_register');//pharmacy
+    Route::post('/login', 'loginUser');//pharmacy
+    Route::get('/logout', 'logout');//pharmacy
+});
+Route::controller(FavouriteController::class)->group(function ()
+{
+    Route::post('/favourite/store/{id}','store');//pharmacy
+    Route::get('/favourite/user/{id}','showFavourite');//pharmacy
+});
+
+Route::get('/favourite/user/delete/{id}',[FavouriteController::class,'deleteFavourite']);//pharmacy

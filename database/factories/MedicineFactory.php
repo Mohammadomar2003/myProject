@@ -21,7 +21,7 @@ class MedicineFactory extends Factory
         return [
             'scientific_name' => fake()->word(),
             'commercial_name' => fake()->word(),
-            'category_id' => fake()->numberBetween(1,4),
+            'category_id' => fake()->numberBetween(1,5),
             'manufacture_company' => fake()->company(),
             'quantity_available' =>fake()->numberBetween(20,500),
             'expiration_date'=>fake()->dateTimeBetween('now','+7 years')->format('Y-m-d h:i:s'),

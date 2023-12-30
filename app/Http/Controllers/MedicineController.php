@@ -44,7 +44,7 @@ class MedicineController extends Controller
         ], 404);
     }
     //
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
         $validator = Validator::make($request->all(),[
             'scientific_name' => 'required',
@@ -53,9 +53,7 @@ class MedicineController extends Controller
             'manufacture_company'=>'required',
             'quantity_available'=>'required',
             'expiration_date'=>'required',
-            'price'=>'required',
-            'warehouse_id'=>'required'
-        ],[
+            'price'=>'required'],[
             'scientific_name.required' => 'The scientific name field is required.',
             'commercial_name.required' => 'The commercial name field is required.',
             'category_id.required' => 'The category name field is required.',
@@ -63,7 +61,6 @@ class MedicineController extends Controller
             'quantity_available.required' => 'The quantity available name field is required.',
             'expiration_date.required' => 'The expiration date name field is required.',
             'price.required' => 'The price name field is required.',
-            'warehouse_id.required' => 'The warehouse name field is required.',
             'expiration_date' => 'date_format:Y-m-d'
         ]);
 
@@ -103,7 +100,7 @@ class MedicineController extends Controller
             $medicine->quantity_available=$request->quantity_available;
             $medicine->expiration_date = $expirationDate;
             $medicine->price=$request->price;
-            $medicine->warehouse_id=$request->warehouse_id;
+            $medicine->warehouse_id=$id;
             $medicine->save();
         }
         return response()->json([
@@ -143,5 +140,48 @@ class MedicineController extends Controller
             'data' => null,
             'msg' => 'No records found.'
         ],404);
+    }
+    public function delete($id)
+    {
+        $med=Medicine::where('id',$id)->delete();
+        return response()->json([
+            'message'=>'deleted successfully'
+        ]);
+    }
+    public function update(Request $request,$id)
+    {
+        $validator = Validator::make($request->all(),[
+            'scientific_name' => 'required',
+            'commercial_name' => 'required',
+            'category_id' => 'required',
+            'manufacture_company'=>'required',
+            'quantity_available'=>'required',
+            'expiration_date'=>'required',
+            'price'=>'required'],[
+            'scientific_name.required' => 'The scientific name field is required.',
+            'commercial_name.required' => 'The commercial name field is required.',
+            'category_id.required' => 'The category name field is required.',
+            'manufacture_company.required' => 'The manufacture company name field is required.',
+            'quantity_available.required' => 'The quantity available name field is required.',
+            'expiration_date.required' => 'The expiration date name field is required.',
+            'price.required' => 'The price name field is required.',
+            'expiration_date' => 'date_format:Y-m-d'
+        ]);
+        $med=DB::table('medicines')
+            ->where('id', $id)
+            ->update([
+                'scientific_name' => $request->scientific_name,
+                'commercial_name' =>$request->commercial_name,
+                'category_id' =>$request->category_id,
+                'manufacture_company' =>$request->manufacture_company,
+                'quantity_available' =>$request->quantity_available,
+                'expiration_date' =>$request->expiration_date,
+                'price' =>$request->price,
+            ]);
+
+        return response()->json([
+            'msg'=>'updated successfully',
+            'status'=>200
+        ]);
     }
 }

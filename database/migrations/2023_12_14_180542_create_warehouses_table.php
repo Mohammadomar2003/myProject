@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
-            $table->string('WareHousename');
+            $table->string('WareHouse_name');
             $table->string('username');
             $table->string('password');
+            $table->integer('role')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

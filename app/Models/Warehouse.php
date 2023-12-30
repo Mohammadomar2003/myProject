@@ -16,7 +16,12 @@ class Warehouse extends Authenticatable
     {
         return $this->hasMany(Medicine::class);
     }
-    protected  $fillable=['WareHousename','password','username'];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    protected  $fillable=['WareHouse_name','password','username'];
     protected $hidden = [
         'password',
         'remember_token',

@@ -19,12 +19,13 @@ class WarehouseSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         Warehouse::truncate();
         Schema::enableForeignKeyConstraints();
-        $Warehouse_names = ['omar','2','3','4'];
-        for($i=0;$i<4;$i++)
+        $Warehouse_names = ['omar','anas','abd','masa','maya'];
+        $username = ['omar','anas','abd','masa','maya'];
+        for($i=0;$i<5;$i++)
         {
             Warehouse::create([
-                'WareHousename' => $Warehouse_names[$i],
-                'username'=>'omar',
+                'WareHouse_name' => $Warehouse_names[$i],
+                'username'=>$username[$i],
                 'password'=>'123456'
             ]);
         }

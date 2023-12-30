@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('order_medicines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('medicine_id')->constrained('medicines')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('medicine_id')->constrained('medicines')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('amount');
             $table->timestamps();
         });
     }

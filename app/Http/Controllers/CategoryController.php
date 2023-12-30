@@ -18,4 +18,15 @@ class CategoryController extends Controller
         ];
         return response($array);
     }
+    public function getCategory()
+    {
+        $category=Category::all();
+
+        $array=[
+            'data'=>$category,
+            'message'=>'all warehouse',
+            'status'=>200
+        ];
+        return response($array);
+    }
 }

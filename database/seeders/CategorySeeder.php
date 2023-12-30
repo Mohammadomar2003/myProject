@@ -18,8 +18,8 @@ class CategorySeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         Category::truncate();
         Schema::enableForeignKeyConstraints();
-        $category_names = ['Infections','Painkillers','Digestives','Hearty'];
-        for($i=0;$i<4;$i++)
+        $category_names = ['Pain Killers','Inflammation','Immunomodulatory  Medications','Dermatological  Medications','Hormonedisorders  Medications'];
+        for($i=0;$i<5;$i++)
         {
             Category::query()->create([
                 'name' => $category_names[$i],
